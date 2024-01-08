@@ -5,7 +5,7 @@ import com.example.BusManagementProject.model.User;
 public interface UserService {
     void addUser(User user);
 
-    String Login(String username, String password);
+    String login(String username, String password);
 
     boolean isLoggedIn(String token);
 

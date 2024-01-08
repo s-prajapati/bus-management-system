@@ -38,6 +38,8 @@ public class User {
 
     private String token;
 
+
+
     public String generateToken() {
         int length = 10;
         String allowedCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -58,11 +60,15 @@ public class User {
         // Convert StringBuilder to String and return
         return randomString.toString();
     }
-    public User(String username, String email, String password) {
+
+
+
+    public User(String username, String email, String password,String role, String token) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.token = generateToken();
+        this.role = role;
+        this.token = token;
     }
 }
 

@@ -14,4 +14,6 @@ public class AddScheduleRequest {
   @NotNull private String busRegNumber;
 
   @NotNull private Long routeId;
+
+  @NotNull private String token;
 }

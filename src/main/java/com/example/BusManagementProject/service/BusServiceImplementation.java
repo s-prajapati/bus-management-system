@@ -16,6 +16,7 @@ public class BusServiceImplementation implements BusService{
 
     @Override
     public void addBus(Bus bus) {
+        System.out.println("Hello"+bus);
         busRepository.save(bus);
     }
 
