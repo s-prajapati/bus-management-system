@@ -20,10 +20,10 @@ public class Schedule {
     private Long id;
 
     @Column(name = "start_time")
-    private LocalTime startTime;
+    private String startTime;
 
     @Column(name = "end_time")
-    private LocalTime endTime;
+    private String endTime;
 
     @ManyToOne
     private Bus bus;

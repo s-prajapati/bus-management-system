@@ -16,8 +16,15 @@ public class BusServiceImplementation implements BusService{
 
     @Override
     public void addBus(Bus bus) {
-        System.out.println("Hello"+bus);
-        busRepository.save(bus);
+        if(bus.getBusType().equalsIgnoreCase("deluxe")) {
+            bus.setBusType("DELUXE");
+            busRepository.save(bus);
+        } else if (bus.getBusType().equalsIgnoreCase("ordinary")) {
+            bus.setBusType("Ordinary");
+            busRepository.save(bus);
+        } else{
+            throw new RuntimeException("Only Deluxe and Ordinary bus type allowed");
+        }
     }
 
     @Override

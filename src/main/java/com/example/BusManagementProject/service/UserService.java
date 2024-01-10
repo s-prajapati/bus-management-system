@@ -9,5 +9,7 @@ public interface UserService {
 
     boolean isLoggedIn(String token);
 
+    boolean isAdmin(String token);
+
     void logOut(String token);
 }

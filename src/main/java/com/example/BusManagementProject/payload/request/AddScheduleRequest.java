@@ -7,13 +7,12 @@ import java.time.LocalTime;
 
 @Data
 public class AddScheduleRequest {
-  @NotNull private LocalTime startTime;
+  @NotNull private String startTime;
 
-  @NotNull private LocalTime endTime;
+  @NotNull private String endTime;
 
   @NotNull private String busRegNumber;
 
   @NotNull private Long routeId;
 
-  @NotNull private String token;
 }

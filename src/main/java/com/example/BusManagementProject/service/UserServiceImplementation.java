@@ -30,7 +30,7 @@ public class UserServiceImplementation implements UserService{
         Optional<User> user= userRepository.findByUsername(username);
         if(user.isPresent()) {
             if(Objects.equals(user.get().getPassword(), password)) {
-                String token = user.get().generateToken();
+                String token = user.get().getRole()+ user.get().generateToken();
                 User newUser = new User(username,user.get().getEmail(),password,user.get().getRole(),token);
                 newUser.setId(user.get().getId());
                 userRepository.save(newUser);
@@ -52,13 +52,21 @@ public class UserServiceImplementation implements UserService{
     }
 
     @Override
+    public boolean isAdmin(String token) {
+        return token.startsWith("ADMIN");
+    }
+
+    @Override
     public void logOut(String token) {
+        System.out.println(token);
         Optional<User> user= userRepository.findUserByToken(token);
-        if(user.isPresent()){
-            user.get().setToken(null);
+        if(user.isPresent()) {
+            User newUser = new User(user.get().getUsername(),user.get().getEmail(),user.get().getPassword(),user.get().getRole(),null);
+            newUser.setId(user.get().getId());
+            userRepository.save(newUser);
         }
         else {
-            throw new RuntimeException("User doesn't exist");
+            throw new RuntimeException("Incorrect credentials");
         }
     }
 }

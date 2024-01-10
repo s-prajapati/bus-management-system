@@ -28,6 +28,8 @@ public class ScheduleServiceImplementation implements ScheduleService{
     RouteService routeService;
     @Override
     public void addSchedule(AddScheduleRequest addScheduleRequest) {
+        if(addScheduleRequest.getEndTime().compareTo(addScheduleRequest.getStartTime())<=0)
+            throw new RuntimeException("Trip end time can not be less than or equal to start time");
         Optional<Bus> bus = busService.findByRegNumber(addScheduleRequest.getBusRegNumber());
         Optional<Route> route = routeService.getRoutById(addScheduleRequest.getRouteId());
         if(bus.isPresent() && route.isPresent()) {
@@ -60,11 +62,11 @@ public class ScheduleServiceImplementation implements ScheduleService{
     }
 
     private boolean isNewScheduleNonOverLapping(
-            LocalTime startTime, LocalTime endTime, List<Schedule> scheduleList
+            String startTime, String endTime, List<Schedule> scheduleList
     ) {
         for(Schedule schedule: scheduleList) {
-            boolean isOverLapping = !startTime.isAfter(schedule.getEndTime()) && !endTime.isBefore(schedule.getStartTime());
-            if(isOverLapping) return false;
+            boolean isNotOverLapping = endTime.compareTo(schedule.getStartTime())<0 || startTime.compareTo(schedule.getEndTime())>0;
+            if(!isNotOverLapping) return false;
         }
         return true;
     }

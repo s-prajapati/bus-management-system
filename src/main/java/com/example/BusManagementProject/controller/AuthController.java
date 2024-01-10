@@ -73,8 +73,9 @@ public class AuthController {
         new User(
             signUpRequest.getUsername(),
             signUpRequest.getEmail(),
+                signUpRequest.getPassword(),
             signUpRequest.getRole(),
-            signUpRequest.getPassword(),
+
                 null);
 
     if (signUpRequest.getRole() == null || signUpRequest.getRole().equalsIgnoreCase("user")) {
@@ -84,7 +85,12 @@ public class AuthController {
     } else {
       throw new RuntimeException("Role Not Found!");
     }
-    userRepository.save(user);
+    userService.addUser(user);
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+  }
+  @PostMapping("/logout")
+  public ResponseEntity<?> logout(@Valid @RequestHeader String token) {
+    userService.logOut(token);
+    return ResponseEntity.ok(new MessageResponse("logged out successfully"));
   }
 }

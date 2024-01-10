@@ -7,12 +7,11 @@ import com.example.BusManagementProject.payload.response.RouteDetailsResponse;
 import com.example.BusManagementProject.service.BusService;
 import com.example.BusManagementProject.service.RouteService;
 import com.example.BusManagementProject.service.ScheduleService;
+import com.example.BusManagementProject.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,25 +25,48 @@ public class UserController {
   RouteService routeService;
 
   @Autowired
+  UserService userService;
+
+  @Autowired
   ScheduleService scheduleService;
 
   @GetMapping("/get-all-bus")
-  public ResponseEntity<List<Bus>> getAllBus() {
-    return ResponseEntity.ok(busService.getAllBus());
+  public ResponseEntity<List<Bus>> getAllBus(@Valid @RequestHeader String token) {
+    if(userService.isLoggedIn(token)) {
+      return ResponseEntity.ok(busService.getAllBus());
+    }
+    else{
+      throw new RuntimeException("Invalid credentials");
+    }
   }
 
   @GetMapping("/get-all-routes")
-  public ResponseEntity<List<Route>> getAllRoutes() {
-    return ResponseEntity.ok(routeService.getAllRoute());
+  public ResponseEntity<List<Route>> getAllRoutes(@Valid @RequestHeader String token) {
+    if(userService.isLoggedIn(token)) {
+      return ResponseEntity.ok(routeService.getAllRoute());
+    }
+    else{
+      throw new RuntimeException("Invalid credentials");
+    }
   }
 
   @GetMapping("/get-all-schedule")
-  public ResponseEntity<List<Schedule>> getAllSchedule() {
-    return ResponseEntity.ok(scheduleService.getAllSchedule());
+  public ResponseEntity<List<Schedule>> getAllSchedule(@Valid @RequestHeader String token) {
+    if(userService.isLoggedIn(token)) {
+      return ResponseEntity.ok(scheduleService.getAllSchedule());
+    }
+    else{
+      throw new RuntimeException("Invalid credentials");
+    }
   }
 
   @GetMapping("/get-schedule-by-route-id/{routeId}")
-  public ResponseEntity<List<RouteDetailsResponse>> getScheduleByRouteId(@PathVariable Long routeId) {
-    return ResponseEntity.ok(scheduleService.getScheduleByRouteId(routeId));
+  public ResponseEntity<List<RouteDetailsResponse>> getScheduleByRouteId(@PathVariable Long routeId,@Valid @RequestHeader String token) {
+    if(userService.isLoggedIn(token)) {
+      return ResponseEntity.ok(scheduleService.getScheduleByRouteId(routeId));
+    }
+    else{
+      throw new RuntimeException("Invalid credentials");
+    }
   }
 }
